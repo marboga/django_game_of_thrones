@@ -3,31 +3,50 @@ from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
-from models import House
-
 # Create your views here.
 
+houses = [
+	{
+		'name': 'Baratheon',
+		'sigil': 'Stag',
+		'colors': ['green', 'gold'],
+		'motto': 'Ours is the Fury'
+	},
+	{
+		'name': 'Lannister',
+		'sigil': 'Lion',
+		'colors': ['gold', 'crimson'],
+		'motto': 'Hear Me Roar'
+	},
+]
 
-
+try:
+	delete_db = default_storage.delete('./database.py')
+except:
+	pass
+save_db = default_storage.save('./database.py', ContentFile(houses))
 
 def index(request):
+
 	if request.method == 'POST':
-		new_house = House.objects.create_house(request.POST)
-		if new_house[0] == True: #this means we were successful
-			print 'we rejoice!'
-		else:
-			context['errors'] = new_house[1]
+		print request, "\n","*"*50,"\n" , request.POST
+		new_house = {}
+		new_house['name'] = request.POST['name']
+		new_house['sigil'] = request.POST['sigil']
+		new_house['motto'] = request.POST['motto']
+		new_house['colors'] = []
+		new_house['colors'].append(request.POST['color1'])
+		new_house['colors'].append(request.POST['color2'])
+		print new_house, "h*50"*50
+		houses.append(new_house)
+		delete_db
+		save_db
+
 
 	context = {
-		'houses': House.objects.all(),
+		'houses': houses,
 	}
 	return render(request, 'houses/index.html', context)
-
-
-
-
-
-
 
 def show(request, house):
 	house = int(house)
@@ -36,10 +55,10 @@ def show(request, house):
 		messages.warning(request, 'House not found in the database')
 		return redirect('/')
 
-
+	houses[house]['id'] = house
 
 	context = {
-		'one_house': "sdga"
+		'one_house': houses[house]
 	}
 	return render(request, 'houses/index.html', context)
 
