@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Houses of GoT</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+	</head>
+	<body>
+		<h1>Game of Thrones: You Win or You Die</h1>
+		{% if houses %}
+			{% for house in houses %}
+				<p>
+					{{ house.name }} {{ house.sigil }} {{ house.motto }}
+					<a href="/house/{{ forloop.counter0 }}">Go to House</a>
+					<a href="/house/{{ forloop.counter0 }}/delete">Delete</a>
+				</p>
+			{% endfor %}
+
+		{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+				<li {% if message.tags %}class="{{ message.tags }}" {% endif %} >{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+			<form class="creation_form" action="/" method="post">
+				{% csrf_token %}
+				<label for="name">Name:</label>
+				<input type="text" name="name" value="">
+				<label for="sigil">Sigil:</label>
+				<input type="text" name="sigil" value="">
+				<label for="color1">Primary Color:</label>
+				<input type="text" name="color1" value="">
+				<label for="color2">Secondary Color:</label>
+				<input type="text" name="color2" value="">
+				<label for="motto">Motto:</label>
+				<input type="text" name="motto" value="">
+				<input type="submit" name="" value="Add a new House">
+			</form>
+
+		{% elif one_house %}
+			<p>{{ one_house }}</p>
+
+			<form class="edit_form" action="/update/{{ one_house.id }}" method="post">
+				{% csrf_token %}
+				<label for="name">Name:</label>
+				<input type="text" name="name" value="{{ one_house.name }}">
+				<label for="sigil">Sigil:</label>
+				<input type="text" name="sigil" value="{{ one_house.sigil }}">
+				<label for="color1">Primary Color:</label>
+				<input type="text" name="color1" value="{{ one_house.colors.0 }}">
+				<label for="color2">Secondary Color:</label>
+				<input type="text" name="color2" value="{{ one_house.colors.1 }}">
+				<label for="motto">Motto:</label>
+				<input type="text" name="motto" value="{{ one_house.motto }}">
+				<input type="submit" name="" value="Edit House">
+			</form>
+		{% endif %}
+	</body>
+</html>
