@@ -41,4 +41,9 @@ class House(models.Model):
 	motto = models.CharField(max_length=200)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
+	region = models.ForeignKey(Region, on_delete=models.CASCADE)
 	objects = HouseManager()
+
+class Region(models.Model):
+	name = models.CharField(max_length=200)
+	trade_goods = models.CharField(max_length=200)
