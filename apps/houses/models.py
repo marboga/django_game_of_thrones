@@ -1,16 +1,33 @@
 from __future__ import unicode_literals
-
 from django.db import models
 
 
+class RegionManager(models.Manager):
+	def create_region(self, data):
+		errors = []
+		print data
+		if not data['name']:
+			errors.append('Name must exist')
+
+		if not errors:
+			# try:
+			region = self.create(name=data['name'])
+			print region
+			return (True, region)
+			# except:
+			# 	print 'error'
+			# 	return (False, ['unknown db error'])
+		else:
+			return (False, errors)
 
 class Region(models.Model):
 	name = models.CharField(max_length=200)
 	trade_goods = models.CharField(max_length=200)
-
+	objects = RegionManager()
 
 class HouseManager(models.Manager):
 	def create_house(self, data):
+		print data
 		errors = []
 		if not data['name']:
 			errors.append('name must not be empty')
@@ -69,5 +86,4 @@ class House(models.Model):
 	motto = models.CharField(max_length=200)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
-	region = models.ForeignKey(Region, on_delete=models.CASCADE, default=1)
 	objects = HouseManager()

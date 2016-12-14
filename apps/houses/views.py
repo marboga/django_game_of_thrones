@@ -13,6 +13,8 @@ def index(request):
 		else:
 			context['errors'] = new_house[1]
 
+		print "\nwow"
+	print House.objects.all()
 	context = {
 		'houses': House.objects.all(),
 	}

@@ -21,6 +21,8 @@
 					<a href="{% url 'houses:delete' house.id %}">Delete</a>
 				</div>
 			{% endfor %}
+		{% else %}
+				<h1>we have no houses</h1>
 		{% endif %}
 		{% if messages %}
 		<ul class="messages">
@@ -47,11 +49,10 @@
 				<label for=""></label>
 				<input class="button button-primary" type="submit" name="" value="Add a new House">
 			</form>
-			<form class="region_form column one-third" action="{% url 'regions:index' %}" method="post">
+			<form class="region_form column one-third" action="{% url 'regions:create' %}" method="post">
 				{% csrf_token %}
 				<label for="name">Region Name:</label>
 				<input type="text" name="name" value="">
-
 				<label for=""></label>
 				<input class="button button-secondary" type="submit" name="" value="Add a new Region">
 			</form>
