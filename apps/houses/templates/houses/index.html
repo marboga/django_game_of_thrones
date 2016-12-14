@@ -4,27 +4,35 @@
 		<meta charset="utf-8">
 		<title>Houses of GoT</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'css/style.css'  %}">
 	</head>
 	<body>
 		<h1>Game of Thrones: You Win or You Die</h1>
 		{% if houses %}
 			{% for house in houses %}
-				<p>
-					{{ house.name }} {{ house.sigil }} {{ house.motto }}
-					<a href="/house/{{ forloop.counter0 }}">Go to House</a>
-					<a href="/house/{{ forloop.counter0 }}/delete">Delete</a>
-				</p>
-			{% endfor %}
+				<div class='house'>
+					<h5 class="no-padding">{{ house.name }}</h5>
+					<p class="no-padding">{{ house.color1 }} and {{ house.color2 }}</p>
+					<p class="no-padding">{{ house.sigil }}</p>
+					<p class="no-padding">{{ house.motto }}</p>
 
+					<a href="{% url 'houses:show' house.id %}">Go to House</a>
+					<a href="{% url 'houses:delete' house.id %}">Delete</a>
+				</div>
+			{% endfor %}
+		{% endif %}
 		{% if messages %}
 		<ul class="messages">
 			{% for message in messages %}
-				<li {% if message.tags %}class="{{ message.tags }}" {% endif %} >{{ message }}</li>
+				<li {% if message.tags %} class="{{ message.tags }}" {% endif %} >{{ message }}</li>
 			{% endfor %}
 		</ul>
-		{% endif %}
 
-			<form class="creation_form" action="/" method="post">
+
+		{% endif %}
+		<div class="row">
+			<form class="creation_form column one-third" action="{% url 'houses:index' %}" method="post">
 				{% csrf_token %}
 				<label for="name">Name:</label>
 				<input type="text" name="name" value="">
@@ -35,27 +43,18 @@
 				<label for="color2">Secondary Color:</label>
 				<input type="text" name="color2" value="">
 				<label for="motto">Motto:</label>
-				<input type="text" name="motto" value="">
-				<input type="submit" name="" value="Add a new House">
+				<input class="u-full-width" type="text" name="motto" value="">
+				<label for=""></label>
+				<input class="button button-primary" type="submit" name="" value="Add a new House">
 			</form>
-
-		{% elif one_house %}
-			<p>{{ one_house }}</p>
-
-			<form class="edit_form" action="/update/{{ one_house.id }}" method="post">
+			<form class="region_form column one-third" action="{% url 'regions:index' %}" method="post">
 				{% csrf_token %}
-				<label for="name">Name:</label>
-				<input type="text" name="name" value="{{ one_house.name }}">
-				<label for="sigil">Sigil:</label>
-				<input type="text" name="sigil" value="{{ one_house.sigil }}">
-				<label for="color1">Primary Color:</label>
-				<input type="text" name="color1" value="{{ one_house.colors.0 }}">
-				<label for="color2">Secondary Color:</label>
-				<input type="text" name="color2" value="{{ one_house.colors.1 }}">
-				<label for="motto">Motto:</label>
-				<input type="text" name="motto" value="{{ one_house.motto }}">
-				<input type="submit" name="" value="Edit House">
+				<label for="name">Region Name:</label>
+				<input type="text" name="name" value="">
+
+				<label for=""></label>
+				<input class="button button-secondary" type="submit" name="" value="Add a new Region">
 			</form>
-		{% endif %}
+		</div>
 	</body>
 </html>

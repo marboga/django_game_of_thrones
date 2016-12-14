@@ -4,7 +4,10 @@ from django.db import models
 
 
 
-# Create your models here.
+class Region(models.Model):
+	name = models.CharField(max_length=200)
+	trade_goods = models.CharField(max_length=200)
+
 
 class HouseManager(models.Manager):
 	def create_house(self, data):
@@ -33,6 +36,31 @@ class HouseManager(models.Manager):
 		else:
 			return (False, errors)
 
+	def remove_house(self, id):
+		errors = []
+		try:
+			print 'deleting maybe'
+			deleted = self.get(id=id).delete()
+		except:
+			deleted = ["This is no good"]
+			print "whoooo nelly bad deleteds"
+		return (True, deleted)
+
+	def update_house(self, data):
+		try:
+			house = self.get(id=data['id'])
+			print 'house', house
+			house.name = data['name']
+			house.sigil = data['sigil']
+			house.color1 = data['color1']
+			house.color2 = data['color2']
+			house.motto = data['motto']
+			house.save()
+			return (True, house)
+		except House.DoesNotExist:
+			print 'doesnt exist'
+		return (False, "it doesn't exist")
+
 class House(models.Model):
 	name = models.CharField(max_length=200)
 	sigil = models.CharField(max_length=200)
@@ -41,9 +69,5 @@ class House(models.Model):
 	motto = models.CharField(max_length=200)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
-	region = models.ForeignKey(Region, on_delete=models.CASCADE)
+	region = models.ForeignKey(Region, on_delete=models.CASCADE, default=1)
 	objects = HouseManager()
-
-class Region(models.Model):
-	name = models.CharField(max_length=200)
-	trade_goods = models.CharField(max_length=200)

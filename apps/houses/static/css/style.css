@@ -1,0 +1,16 @@
+* {
+	/*background-color: yellow;*/
+}
+
+div.house {
+	display: inline-block;
+	background-color: #3dd;
+	padding: 25px;
+	margin: 12px;
+	width: 350px;
+	text-align: center;
+}
+
+.no-padding {
+	padding: 5px;
+}
