@@ -3,7 +3,8 @@ from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
-from models import House, Region
+from models import House
+from ..regions.models import Region
 
 def index(request):
 	if request.method == 'POST':
@@ -15,6 +16,7 @@ def index(request):
 
 	context = {
 		'houses': House.objects.all(),
+		'regions': Region.objects.all(),
 	}
 	return render(request, 'houses/index.html', context)
 
@@ -36,4 +38,4 @@ def update(request, id):
 		house =  House.objects.update_house(request.POST)
 		if not house[0]:
 			messages.error(request, house[1])
-	return redirect('/')
+	return redirect('houses:index')

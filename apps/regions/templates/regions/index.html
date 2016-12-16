@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Region Page</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+
+	</head>
+	<body>
+		<div class="row">
+			<div class="results column one-half">
+				<h2>Regions Controlled by Houses</h2>
+				{% for house in houses %}
+					<h5>
+						{{ house.name }}
+					</h5>
+					<ul>
+						{% for r in house.region.all %}
+
+								<li>{{r.name}}</li>
+							
+						{% endfor %}
+					</ul>
+				{% endfor %}
+			</div>
+			<div class="column one-third">
+				<h2>All Regions</h2>
+				{% for region in regions %}
+					<h4>{{region.name}}</h4>
+				{% endfor %}
+			</div>
+		</div>
+		<a href="{% url 'houses:index' %}" class="button">Return to Houses</a>
+	</body>
+</html>

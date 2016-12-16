@@ -1,11 +1,10 @@
-* {
-	/*background-color: yellow;*/
+body {
+	background-color: #9ff;
 }
 
 div.house {
 	display: inline-block;
-	background-color: #3dd;
-	padding: 25px;
+	padding: 5px;
 	margin: 12px;
 	width: 350px;
 	text-align: center;
@@ -13,4 +12,42 @@ div.house {
 
 .no-padding {
 	padding: 5px;
+	font-weight: bold;
+}
+
+.back-gold {
+	background-color: gold;
+}
+.back-green {
+	background-color: green;
+}
+.back-yellow {
+	background-color: yellow;
+}
+.back-black {
+	background-color: black;
+}
+.back-white {
+	background-color: white;
+}
+.back-grey {
+	background-color: grey;
+}
+.gold {
+	color: gold;
+}
+.red {
+	color: red;
+}
+.green {
+	color: green;
+}
+.blue {
+	color: blue;
+}
+.white {
+	color: white;
+}
+.black {
+	color: black;
 }

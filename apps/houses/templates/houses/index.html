@@ -11,7 +11,7 @@
 		<h1>Game of Thrones: You Win or You Die</h1>
 		{% if houses %}
 			{% for house in houses %}
-				<div class='house'>
+				<div class='house back-{{ house.color1.lower }} {{ house.color2.lower }}'>
 					<h5 class="no-padding">{{ house.name }}</h5>
 					<p class="no-padding">{{ house.color1 }} and {{ house.color2 }}</p>
 					<p class="no-padding">{{ house.sigil }}</p>
@@ -32,6 +32,7 @@
 
 		{% endif %}
 		<div class="row">
+
 			<form class="creation_form column one-third" action="{% url 'houses:index' %}" method="post">
 				{% csrf_token %}
 				<label for="name">Name:</label>
@@ -47,7 +48,8 @@
 				<label for=""></label>
 				<input class="button button-primary" type="submit" name="" value="Add a new House">
 			</form>
-			<form class="region_form column one-third" action="{% url 'regions:index' %}" method="post">
+
+			<form class="region_form column one-third" action="{% url 'regions:create' %}" method="post">
 				{% csrf_token %}
 				<label for="name">Region Name:</label>
 				<input type="text" name="name" value="">
@@ -55,6 +57,23 @@
 				<label for=""></label>
 				<input class="button button-secondary" type="submit" name="" value="Add a new Region">
 			</form>
+
+			<div class="connection column one-third">
+				<form class="" action="{% url 'regions:connect' %}" method="post">
+					{% csrf_token %}
+					<select class="" name="house">
+						{% for house in houses %}
+						<option value="{{ house.id }}">{{ house.name }}</option>
+						{% endfor %}
+					</select>
+					<select class="" name="region">
+						{% for region in regions %}
+						<option value="{{ region.id }}">{{ region.name }}</option>
+						{% endfor %}
+					</select>
+					<input type="submit" name="submit" value="Add Connection">
+				</form>
+			</div>
 		</div>
 	</body>
 </html>

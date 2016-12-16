@@ -1,12 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
-
-
-class Region(models.Model):
-	name = models.CharField(max_length=200)
-	trade_goods = models.CharField(max_length=200)
+from ..regions.models import Region
 
 
 class HouseManager(models.Manager):
@@ -61,6 +56,20 @@ class HouseManager(models.Manager):
 			print 'doesnt exist'
 		return (False, "it doesn't exist")
 
+	def bridge_connections(self, data):
+		errors = []
+		# try:
+		house = int(data['house'])
+		region = int(data['region'])
+		# except:
+			# errors.append('this is impossible!')
+		this_house = House.objects.get(id=house)
+		this_region = Region.objects.get(id=region)
+		print this_house.name, this_region.name
+		this_house.region.add(this_region)
+		this_house.save()
+
+
 class House(models.Model):
 	name = models.CharField(max_length=200)
 	sigil = models.CharField(max_length=200)
@@ -69,5 +78,5 @@ class House(models.Model):
 	motto = models.CharField(max_length=200)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
-	region = models.ForeignKey(Region, on_delete=models.CASCADE, default=1)
+	region = models.ManyToManyField(Region, related_name="house_region")
 	objects = HouseManager()
